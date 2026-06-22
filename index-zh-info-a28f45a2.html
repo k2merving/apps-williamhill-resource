@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>hth · 页面与入口说明</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f1f7f5;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      color: #1d2f2b;
+      line-height: 1.7;
+      padding: 2rem 1.2rem;
+      max-width: 920px;
+      margin: 0 auto;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* 网格卡片背景装饰 */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image:
+        linear-gradient(rgba(0, 140, 120, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 140, 120, 0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+    }
+
+    /* 文章标题区 */
+    .post-header {
+      margin-bottom: 2.8rem;
+      border-bottom: 1px solid #cde0db;
+      padding-bottom: 1.6rem;
+    }
+
+    .post-title {
+      font-size: 2.2rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.4rem;
+      color: #0b3d36;
+      line-height: 1.2;
+    }
+
+    .post-sub {
+      font-size: 1rem;
+      color: #3d6b62;
+      border-left: 3px solid #2a9d8f;
+      padding-left: 1rem;
+      margin-top: 0.6rem;
+    }
+
+    /* 导语卡片 */
+    .intro-card {
+      background: #ffffffec;
+      backdrop-filter: blur(2px);
+      border-radius: 20px;
+      padding: 2rem 1.8rem;
+      margin-bottom: 2.5rem;
+      box-shadow: 0 8px 20px rgba(0, 60, 50, 0.06);
+      border: 1px solid #d2e8e2;
+    }
+
+    .intro-card p {
+      font-size: 1.05rem;
+      color: #23453e;
+    }
+
+    /* 正文段落区：网格卡片风格 */
+    .content-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      margin: 2.2rem 0;
+    }
+
+    .text-card {
+      background: white;
+      border-radius: 24px;
+      padding: 1.8rem 1.8rem;
+      border: 1px solid #d9eae5;
+      box-shadow: 0 4px 12px rgba(0, 90, 75, 0.04);
+      transition: box-shadow 0.2s;
+    }
+
+    .text-card:hover {
+      box-shadow: 0 8px 24px rgba(0, 120, 100, 0.08);
+    }
+
+    .text-card h2 {
+      font-size: 1.3rem;
+      font-weight: 500;
+      color: #0f4d44;
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .text-card h2::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: #2a9d8f;
+      border-radius: 50%;
+      margin-right: 6px;
+    }
+
+    .text-card p {
+      margin-bottom: 0.6rem;
+    }
+
+    /* 引用提示块 */
+    .quote-block {
+      background: #e6f3f0;
+      border-left: 5px solid #2a9d8f;
+      padding: 1.5rem 1.8rem;
+      border-radius: 12px;
+      margin: 2rem 0 2.2rem 0;
+      font-style: normal;
+      color: #1a463e;
+    }
+
+    .quote-block p {
+      margin-bottom: 0.3rem;
+    }
+
+    .quote-block .source {
+      font-size: 0.9rem;
+      color: #4d7a71;
+      margin-top: 0.4rem;
+    }
+
+    /* 访问句 — 作为段落自然出现 */
+    .visit-sentence {
+      background: #f0faf7;
+      padding: 1.2rem 1.8rem;
+      border-radius: 60px;
+      border: 1px solid #b5d9d1;
+      margin: 2.5rem 0 1.8rem 0;
+      text-align: center;
+      font-size: 1.05rem;
+      color: #13453d;
+    }
+
+    .visit-sentence a {
+      color: #0f6b5e;
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px dashed #0f6b5e;
+      transition: border 0.2s;
+    }
+
+    .visit-sentence a:hover {
+      border-bottom: 2px solid #0f6b5e;
+    }
+
+    /* FAQ 摘要 */
+    .faq-mini {
+      background: white;
+      border-radius: 24px;
+      padding: 1.6rem 1.8rem;
+      margin-top: 1.8rem;
+      border: 1px solid #d9eae5;
+    }
+
+    .faq-mini details {
+      margin-bottom: 0.8rem;
+      border-bottom: 1px solid #e5f0ed;
+      padding-bottom: 0.6rem;
+    }
+
+    .faq-mini details:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .faq-mini summary {
+      font-weight: 500;
+      color: #13544a;
+      cursor: pointer;
+      padding: 0.3rem 0;
+      list-style: none;
+      display: flex;
+      align-items: center;
+    }
+
+    .faq-mini summary::marker {
+      content: '';
+    }
+
+    .faq-mini summary::before {
+      content: '▸';
+      color: #2a9d8f;
+      margin-right: 10px;
+      transition: transform 0.2s;
+    }
+
+    .faq-mini details[open] summary::before {
+      transform: rotate(90deg);
+    }
+
+    .faq-mini .answer {
+      padding: 0.6rem 0 0.2rem 1.8rem;
+      color: #2b554c;
+      font-size: 0.95rem;
+    }
+
+    /* 底部 */
+    .footer-note {
+      margin-top: 3.5rem;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #6c8d84;
+      border-top: 1px solid #d2e2dd;
+      padding-top: 1.6rem;
+    }
+
+    /* 响应式 */
+    @media (max-width: 600px) {
+      body {
+        padding: 1.2rem 0.8rem;
+      }
+      .post-title {
+        font-size: 1.6rem;
+      }
+      .intro-card {
+        padding: 1.4rem 1.2rem;
+      }
+      .text-card {
+        padding: 1.4rem 1.2rem;
+      }
+      .quote-block {
+        padding: 1rem 1.2rem;
+      }
+      .visit-sentence {
+        padding: 1rem 1rem;
+        border-radius: 40px;
+      }
+      .faq-mini {
+        padding: 1.2rem 1.2rem;
+      }
+    }
+
+    @media (min-width: 700px) {
+      .content-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.8rem;
+      }
+      .text-card {
+        margin-bottom: 0;
+      }
+      .faq-mini {
+        grid-column: 1 / -1;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- 文章标题 + 导语 -->
+  <header class="post-header">
+    <h1 class="post-title">稳定入口，以及页面说明</h1>
+    <div class="post-sub">关于一个简洁访问路径的叙述</div>
+  </header>
+
+  <!-- 导语卡片 -->
+  <div class="intro-card">
+    <p>有时候，你只是想要一个清晰、直接的地址——不必在多个页面之间来回跳转，也不必猜测哪个才是真正的起点。这篇文章围绕一个简单的访问节点展开，说一说它作为稳定入口的意义，以及页面本身所承载的说明意图。</p>
+  </div>
+
+  <!-- 正文多段 — 网格卡片 -->
+  <div class="content-grid">
+
+    <div class="text-card">
+      <h2>从哪一页开始</h2>
+      <p>很多网站会有多个子页面、跳转层，但总得有一个最基础的页面，让人知道「这里是起点」。</p>
+      <p>这个页面不追求复杂，也不堆叠信息，它的存在更像一个路标：告诉你接下来可以往哪个方向看，或者从哪里可以找到更具体的内容。保持入口的稳定，反而比花哨的动效更值得信任。</p>
+    </div>
+
+    <div class="text-card">
+      <h2>页面说明的价值</h2>
+      <p>一个没有说明的页面，就像没有标签的文件夹。虽然用多了会记住，但每次重新打开都多一丝犹豫。</p>
+      <p>这里所写的每一段，都是在尝试做同一件事：把「这个页面是做什么的」讲清楚。它不承诺什么，也不夸大功能，只是平实地描述。对于经常需要回顾的人来说，这种说明能省下不少时间。</p>
+    </div>
+
+    <div class="text-card">
+      <h2>克制与自然</h2>
+      <p>选用蓝绿色点缀，不是为了追赶某种视觉潮流，而是觉得它安静、不刺眼，适合长时间阅读。卡片式的网格布局，也让信息区块各自独立，不至于混在一起。</p>
+      <p>在移动端，每张卡片会自适应宽度，保持可读性。没有弹窗、没有强制跳转。页面本身就很轻，轻到你可以把它当作一个备忘。</p>
+    </div>
+
+    <div class="text-card">
+      <h2>面向什么场景</h2>
+      <p>如果你需要快速定位一个基础页面，或者你想分享一个不容易迷失的链接给朋友，那么这类入口就刚好合适。</p>
+      <p>它不追求日活，也不分析点击。它更像一个安静的索引页——你来了，看到说明，然后决定下一步。真正的价值在于「知道自己在哪」。</p>
+    </div>
+
+  </div>
+
+  <!-- 引用提示 -->
+  <div class="quote-block">
+    <p>“一个稳定的入口，比一百个浮动的链接更可靠。因为用户不需要记忆路径，只需要记住一个名字。”</p>
+    <div class="source">—— 摘自一份关于信息架构的随记</div>
+  </div>
+
+  <!-- 访问句：自然嵌入链接 -->
+  <div class="visit-sentence">
+    如果你需要直接访问这个页面所指的站点，可以在浏览器地址栏输入 <a href="https://index-zh-hth.com">hth</a>，它指向的就是那个稳定入口。
+  </div>
+
+  <!-- FAQ 摘要 -->
+  <div class="faq-mini">
+    <details>
+      <summary>这个页面和网站是什么关系？</summary>
+      <div class="answer">这是一个介绍性质的页面，用来描述站点 <a href="https://index-zh-hth.com" style="color:#0f6b5e;text-decoration:underline;">hth</a> 的入口角色和内容定位。它本身不替代网站，只是补充说明。</div>
+    </details>
+    <details>
+      <summary>内容会频繁变化吗？</summary>
+      <div class="answer">不会。这个页面的定位是稳定说明，所以内容会保持克制，除非入口结构或站点方向有实质调整，否则不会随意改动。</div>
+    </details>
+    <details>
+      <summary>我可以把这个页面分享给别人吗？</summary>
+      <div class="answer">当然可以。它本身就是为分享和引用设计的。只要保留基本链接信息，且不曲解原意即可。</div>
+    </details>
+  </div>
+
+  <!-- 底部 -->
+  <footer class="footer-note">
+    <span>页面说明 · 保持简洁 · 2025</span>
+  </footer>
+
+</div>
+</body>
+</html>
